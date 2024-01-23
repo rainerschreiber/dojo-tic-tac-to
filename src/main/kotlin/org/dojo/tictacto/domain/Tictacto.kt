@@ -10,5 +10,10 @@ class Tictacto {
         board[position - 1] = player.symbol
     }
 
+    fun getPlayedPositions(player: Player): List<Int> {
+        return board.mapIndexedNotNull { index, value ->
+            if (value != " " && value == player.symbol) index + 1 else null
+        }
+    }
 
 }
