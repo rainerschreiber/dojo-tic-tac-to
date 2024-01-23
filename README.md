@@ -1,1 +1,1 @@
-# dojo-tic-tac-to
+Tic Tac To game
