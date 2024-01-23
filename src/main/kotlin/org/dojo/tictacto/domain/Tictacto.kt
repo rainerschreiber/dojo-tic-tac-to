@@ -14,6 +14,10 @@ class Tictacto {
         listOf(3, 5, 7)
     )
 
+    fun canPlay(position: Int): Boolean {
+        return position in 1..9 && board[position - 1] == " "
+    }
+
     fun play(position: Int, player: Player) {
         require(position in 1..9) { "Position must be between 1 and 9" }
         require(board[position - 1] == " ") { "Position $position is already played" }
