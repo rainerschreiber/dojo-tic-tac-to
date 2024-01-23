@@ -16,4 +16,10 @@ class Tictacto {
         }
     }
 
+    fun getAllPlayedPositions(): List<Int> {
+        return board.mapIndexedNotNull { index, value ->
+            if (value != " ") index + 1 else null
+        }
+    }
+
 }
