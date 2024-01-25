@@ -6,6 +6,7 @@ import kotlin.test.Test
 class TictactoIsWinnerTest {
 
     private val testPlayer = Player("Test player", "X")
+    private val theOtherPlayer = Player("The other player", "O")
     private val winningCombinations = listOf(
         listOf(1, 2, 3), listOf(4, 5, 6), listOf(7, 8, 9), listOf(1, 4, 7), listOf(2, 5, 8), listOf(3, 6, 9),
         listOf(1, 5, 9), listOf(3, 5, 7)
@@ -20,28 +21,30 @@ class TictactoIsWinnerTest {
 
     @Test
     fun `Should result in a winner for all the winning combinations`() {
-        // start a tictacto game for each winning combination
         winningCombinations.forEach { combination ->
-            // play the positions for this combination
-            val tictacto = Tictacto()
+            val tictacto = Tictacto(testPlayer, theOtherPlayer)
+            var positionsForTheOtherPlayer: List<Int> =
+                mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9).filter { it !in combination }
             combination.forEach { position ->
                 tictacto.play(position, testPlayer)
+                tictacto.play(positionsForTheOtherPlayer[0], theOtherPlayer)
+                positionsForTheOtherPlayer = positionsForTheOtherPlayer.drop(1)
             }
-            // assert that this combination results in a winner
             assertThat(tictacto.isWinner(testPlayer)).isTrue()
         }
     }
 
     @Test
     fun `Should not result in a winner for all the non-winning combinations`() {
-        // start a tictacto game for each non-winning combination
         nonWinningCombinations.forEach { combination ->
-            // play the positions for this combination
-            val tictacto = Tictacto()
+            val tictacto = Tictacto(testPlayer, theOtherPlayer)
+            var positionsForTheOtherPlayer: List<Int> =
+                mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9).filter { it !in combination }
             combination.forEach { position ->
                 tictacto.play(position, testPlayer)
+                tictacto.play(positionsForTheOtherPlayer[0], theOtherPlayer)
+                positionsForTheOtherPlayer = positionsForTheOtherPlayer.drop(1)
             }
-            // assert that this combination does not result in a winner
             assertThat(tictacto.isWinner(testPlayer)).isFalse()
         }
     }

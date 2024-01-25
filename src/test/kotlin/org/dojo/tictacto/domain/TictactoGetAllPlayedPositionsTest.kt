@@ -10,13 +10,13 @@ class TictactoGetAllPlayedPositionsTest {
 
     @Test
     fun `Should return empty list if no position has been played yet`() {
-        val tictacto = Tictacto()
+        val tictacto = Tictacto(testPlayer, theOtherPlayer)
         assertThat(tictacto.getAllPlayedPositions()).isEmpty()
     }
 
     @Test
     fun `Should return all played positions`() {
-        val tictacto = Tictacto()
+        val tictacto = Tictacto(testPlayer, theOtherPlayer)
         tictacto.play(5, testPlayer)
         assertThat(tictacto.getAllPlayedPositions()).containsExactly(5)
         tictacto.play(1, theOtherPlayer)

@@ -1,6 +1,9 @@
 package org.dojo.tictacto.domain
 
-class Tictacto {
+class Tictacto(
+    val player1: Player,
+    val player2: Player
+) {
 
     val board = arrayOf(" ", " ", " ", " ", " ", " ", " ", " ", " ")
     private val winningCombinations = listOf(
@@ -14,20 +17,15 @@ class Tictacto {
         listOf(3, 5, 7)
     )
 
-    fun canPlay(position: Int): Boolean {
-        return position in 1..9 && board[position - 1] == " "
-    }
+    // initiate player 1 as the first (current) player
+    private var currentPlayer: Player = player1
 
     fun play(position: Int, player: Player) {
+        require(player == currentPlayer) { "It must be player's turn" }
         require(position in 1..9) { "Position must be between 1 and 9" }
         require(board[position - 1] == " ") { "Position $position is already played" }
         board[position - 1] = player.symbol
-    }
-
-    fun getPlayedPositions(player: Player): List<Int> {
-        return board.mapIndexedNotNull { index, value ->
-            if (value != " " && value == player.symbol) index + 1 else null
-        }
+        currentPlayer = if (currentPlayer == player1) player2 else player1
     }
 
     fun getAllPlayedPositions(): List<Int> {
