@@ -23,14 +23,19 @@ class TictactoIsWinnerTest {
     fun `Should result in a winner for all the winning combinations`() {
         winningCombinations.forEach { combination ->
             val tictacto = Tictacto(testPlayer, theOtherPlayer)
+            var result: Tictacto.Result? = null
             var positionsForTheOtherPlayer: List<Int> =
                 mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9).filter { it !in combination }
             combination.forEach { position ->
-                tictacto.play(position, testPlayer)
-                tictacto.play(positionsForTheOtherPlayer[0], theOtherPlayer)
+                result = tictacto.play(position, testPlayer)
+                if (result != null) {
+                    assertThat(tictacto.isWinner(testPlayer)).isTrue()
+                }
+                if (result == null) {
+                    tictacto.play(positionsForTheOtherPlayer[0], theOtherPlayer)
+                }
                 positionsForTheOtherPlayer = positionsForTheOtherPlayer.drop(1)
             }
-            assertThat(tictacto.isWinner(testPlayer)).isTrue()
         }
     }
 

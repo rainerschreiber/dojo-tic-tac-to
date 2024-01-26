@@ -12,6 +12,44 @@ class TictactoPlayTest {
     private val theOtherPlayer = Player("The other player", "O")
 
     @Test
+    fun `Should throw an exception when game is already finished because there is a winner`() {
+        val tictacto = Tictacto(testPlayer, theOtherPlayer)
+        tictacto.play(1, testPlayer)
+        tictacto.play(9, theOtherPlayer)
+        tictacto.play(2, testPlayer)
+        tictacto.play(7, theOtherPlayer)
+        val result = tictacto.play(3, testPlayer)
+        assertThat(result?.winner).isEqualTo(testPlayer)
+        assertFailsWith<IllegalArgumentException>(
+            message = "A call to Tictacto.play method when the game is already finished should throw an IllegalArgumentException",
+            block = {
+                tictacto.play(5, theOtherPlayer)
+            }
+        )
+    }
+
+    @Test
+    fun `Should throw an exception when game is already finished because of a draw`() {
+        val tictacto = Tictacto(testPlayer, theOtherPlayer)
+        tictacto.play(5, testPlayer)
+        tictacto.play(1, theOtherPlayer)
+        tictacto.play(4, testPlayer)
+        tictacto.play(6, theOtherPlayer)
+        tictacto.play(7, testPlayer)
+        tictacto.play(3, theOtherPlayer)
+        tictacto.play(9, testPlayer)
+        tictacto.play(8, theOtherPlayer)
+        val result = tictacto.play(2, testPlayer)
+        assertThat(result?.draw).isTrue()
+        assertFailsWith<IllegalArgumentException>(
+            message = "A call to Tictacto.play method when the game is already finished should throw an IllegalArgumentException",
+            block = {
+                tictacto.play(5, theOtherPlayer)
+            }
+        )
+    }
+
+    @Test
     fun `Should throw an exception when it is not the player's turn to play`() {
         val tictacto = Tictacto(testPlayer, theOtherPlayer)
         assertFailsWith<IllegalArgumentException>(
