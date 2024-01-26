@@ -26,6 +26,7 @@ package org.dojo.tictacto.domain
  * @property board the board
  * @property winningCombinations the winning combinations
  * @property currentPlayer the current player
+ * @property isGameFinished true if the game is finished, false otherwise
  * @constructor Creates a new Tictacto game
  * @throws IllegalArgumentException if the player is not the current player
  * @throws IllegalArgumentException if the position is not between 1 and 9
@@ -40,7 +41,8 @@ class Tictacto(
     data class Result(val winner: Player?, val draw: Boolean)
 
     // init the board starting state
-    val board = arrayOf(" ", " ", " ", " ", " ", " ", " ", " ", " ")
+    var board = arrayOf(" ", " ", " ", " ", " ", " ", " ", " ", " ")
+        private set
     private val winningCombinations = listOf(
         listOf(1, 2, 3),
         listOf(4, 5, 6),
@@ -85,7 +87,7 @@ class Tictacto(
      * @param player the player
      * @return true if the player is the winner, false otherwise
      */
-    fun isWinner(player: Player): Boolean {
+    private fun isWinner(player: Player): Boolean {
         return winningCombinations.any { combination ->
             combination.all { position ->
                 board[position - 1] == player.symbol
@@ -98,7 +100,7 @@ class Tictacto(
      *
      * @return the list of all played positions
      */
-    fun getAllPlayedPositions(): List<Int> {
+    private fun getAllPlayedPositions(): List<Int> {
         return board.mapIndexedNotNull { index, value ->
             if (value != " ") index + 1 else null
         }
